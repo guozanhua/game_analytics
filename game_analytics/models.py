@@ -23,6 +23,9 @@ from datetime import datetime
 class Game(models.Model):
     name = models.CharField(max_length=32, unique=True)
 
+    def __unicode__(self):
+        return self.name
+
 
 class GameSession(models.Model):
     game = models.ForeignKey(Game)
@@ -31,9 +34,19 @@ class GameSession(models.Model):
     ip = models.GenericIPAddressField()
     session_id = models.CharField(max_length=32)
 
+    def __unicode__(self):
+        return "{game}.Session.{session}".format(\
+            game=self.game.name,\
+            session=self.session_id)
+
 class GameEventCategory(models.Model):
     game = models.ForeignKey(Game)
     name = models.CharField(max_length=32)
+
+    def __unicode__(self):
+        return "{game}.{category}".format(\
+            game=self.game.name,\
+            category=self.name)
 
 class GameEvent(models.Model):
     session = models.ForeignKey(GameSession)
@@ -44,5 +57,12 @@ class GameEvent(models.Model):
     x = models.FloatField()
     y = models.FloatField()
     z = models.FloatField()
+
+    def __unicode__(self):
+        return "{game}.{session}.{category}.{event}".format(\
+            game=self.session.game.name,\
+            session=self.session.session_id,\
+            category=self.category.name,\
+            event=self.name)
 
 
