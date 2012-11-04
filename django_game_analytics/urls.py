@@ -19,12 +19,20 @@ from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'django_game_analytics.views.home', name='home'),
     # url(r'^django_game_analytics/', include('django_game_analytics.foo.urls')),
+
+    url(r'^open/(?P<game_name>\w+)/$','game_analytics.views.open'),
+    url(r'^close/(?P<game_name>\w+)/(?P<session_id>\w+)/$','game_analytics.views.close'),
+    url(r'^event/(?P<game_name>\w+)/(?P<session_id>\w+)/(?P<category>\w+)/(?P<name>\w+)/$','game_analytics.views.event'),
+
+
 
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),

@@ -16,25 +16,33 @@ This file is part of game_analytics.
     along with game_analytics.  If not, see <http://www.gnu.org/licenses/>.
 '''
 from django.db import models
+from datetime import datetime
 
 # Create your models here.
 
+class Game(models.Model):
+    name = models.CharField(max_length=32, unique=True)
+
+
 class GameSession(models.Model):
-    game = models.CharField(max_length=32)
+    game = models.ForeignKey(Game)
     start_time = models.DateTimeField()
-    end_time = models.DateTimeField()
+    end_time = models.DateTimeField(null=True)
     ip = models.GenericIPAddressField()
     session_id = models.CharField(max_length=32)
 
 class GameEventCategory(models.Model):
-    game = models.ForeignKey(GameSession)
+    game = models.ForeignKey(Game)
     name = models.CharField(max_length=32)
 
 class GameEvent(models.Model):
+    session = models.ForeignKey(GameSession)
     name = models.CharField(max_length=32)
+    datetime = models.DateTimeField()
     category = models.ForeignKey(GameEventCategory)
-    data = models.TextField()
+    data = models.TextField(null=True)
     x = models.FloatField()
     y = models.FloatField()
     z = models.FloatField()
+
 
