@@ -29,7 +29,7 @@ def open(request,game_name):
     session = GameSession()
     session.session_id = uuid.uuid4().hex
     session.game = game
-    session.ip = request.META["REMOTE_ADDR"]
+    session.store_ipv4(request.META["REMOTE_ADDR"])
     session.start_time = datetime.utcnow()
     session.end_time = datetime(1970,1,1,12,0,0,0)
     session.save()
